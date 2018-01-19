@@ -1,0 +1,16 @@
+{
+  "name": "is-someone-there",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:joeyciechanowicz/is-someone-there.git",
+  "author": "Joey Ciechanowicz <joey.ciechanowicz@macmillan.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "node-webcam": "^0.4.3",
+    "pixelmatch": "^4.0.2",
+    "pngjs": "^3.3.1"
+  }
+}
