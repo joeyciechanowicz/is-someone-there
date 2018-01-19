@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Is anyone playing Ping Pong?</title>
+</head>
+<body>
+
+<div class="jumbotron">
+    <h1 class="display-4">Is anyone playing ping pong? <span id="status">...</span></h1>
+    <hr class="my-4">
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.5.6/Rx.min.js"
+        integrity="sha256-7zGU1beayacHWbvtqcd7V3bEJH34lJMFVEoGfDqoMHE=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+
+  Rx.Observable.interval(1000)
+    .startWith(0)
+    .mergeMap(() => Rx.Observable.fromPromise(fetch('./data.json')))
+    .mergeMap(x => x.json())
+    .subscribe(data => {
+
+      if (data.isOccupied) {
+        if (data.certainty === 100) {
+          document.getElementById('status').innerText = `Yes and I'm absolutely certain!`;
+        } else if (data.certainty < 100 && data.certainty > 50) {
+          document.getElementById('status').innerText = `Yes, I think so.`;
+        } else if (data.certainty < 50) {
+          document.getElementById('status').innerText = `There may be, but I really don't have a clue.`;
+        }
+      } else {
+        if (data.certainty === 0) {
+          document.getElementById('status').innerText = `Nope, it's all yours!`;
+        } else if (data.certainty > 0 && data.certainty < 50) {
+          document.getElementById('status').innerText = `Nope, I don't think so.`;
+        } else {
+          document.getElementById('status').innerText = `No, but don't trust me on this.`;
+        }
+      }
+
+    });
+</script>
+</body>
+</html>
